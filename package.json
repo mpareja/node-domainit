@@ -1,0 +1,33 @@
+{
+  "name": "domainit",
+  "version": "0.0.0",
+  "description": "Run a function within the confines of a domain using the simple callback form you know and love.",
+  "main": "index.js",
+  "scripts": {
+    "test": "tap ./test/*.js"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mpareja/node-domainit.git"
+  },
+  "keywords": [
+    "domains",
+    "exceptions",
+    "handling",
+    "error",
+    "callback"
+  ],
+  "author": {
+    "name": "Mario Pareja",
+    "email": "pareja.mario@gmail.com",
+    "url": "http://www.mariopareja.com/blog"
+  },
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "devDependencies": {
+    "tap": "~0.4.1"
+  }
+}
