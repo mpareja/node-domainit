@@ -4,7 +4,7 @@ var called = false;
 
 domainit(function (cb) {
   throw new Error('Exception!');
-}, function (err) {
+})(function (err) {
   called = true;
   assert(err);
   assert(err.message === 'Exception!');

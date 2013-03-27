@@ -4,7 +4,7 @@ var called = false;
 
 domainit(function (cb) {
   cb(null);
-}, function (err) {
+})(function (err) {
   called = true;
   assert(!err);
 });

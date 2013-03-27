@@ -6,7 +6,7 @@ var called = false;
 domainit(function () {
   var emitter = new EventEmitter();
   emitter.emit('error', new Error('Error event!'));
-}, function (err) {
+})(function (err) {
   called = true;
   assert(err);
   assert(err.message === 'Error event!');

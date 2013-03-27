@@ -16,7 +16,7 @@ d.on('error', function () {
 d.run(function () {
   domainit(function (cb) {
     cb(new Error('Callback!'));
-  }, function (err) {
+  })(function (err) {
     throw new Error('Error in handler!');
   });
 });

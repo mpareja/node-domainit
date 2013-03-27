@@ -4,20 +4,17 @@ Wrap a function with the warm comfort of a node domain using standard callbacks.
 
 ```javascript
 var assert = require('assert');
-var domainit = require('../');
-var called = false;
+var domainit = require('domainit');
 
-domainit(function (cb) {
-  cb(null);
-}, function (err) {
-  called = true;
-  assert(!err);
-});
+function unsafe(cb) {
+  process.nextTick(function () {
+    throw new Error('Oops!');
+  });
+}
 
-process.on('exit', function () {
-  if (!called) {
-	throw new Error('Handler not called.');
-	process.exit(1);
-  }
+var safe = domainit(unsafe);
+safe(function (err) {
+  assert(err);
+  assert(err.message === 'Oops!');
 });
 ```

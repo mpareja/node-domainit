@@ -18,10 +18,7 @@ process.on('exit', function () {
 
 domainit(function (cb) {
   cb(new Error('Callback!'));
-}, function (err) {
+})(function (err) {
   throw new Error('Error in handler!');
 });
 
-
-
-// HERE: test that domain executes function on a later tick

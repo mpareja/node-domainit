@@ -4,7 +4,7 @@ var called = false;
 
 domainit(function (cb) {
   cb(new Error('Callback!'));
-}, function (err) {
+})(function (err) {
   called = true;
   assert(err);
   assert(err.message === 'Callback!');
