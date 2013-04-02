@@ -11,7 +11,14 @@ module.exports = function (fn) {
     callback(error, result);
   });
   return function (cb) {
-    callback = cb;
+    var active = domain.active;
+    callback = !domain.active ? cb
+      : function (err, result) {
+          active.run(function() {
+            cb(err, result);
+          });
+        };
+
     d.run(function () {
       fn(d.intercept(function (data) {
         result = data;

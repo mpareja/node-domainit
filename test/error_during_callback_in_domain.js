@@ -1,6 +1,7 @@
 var assert = require('assert');
 var domainit = require('../');
 var called = false;
+var wrongDomain = 0;
 
 // Test that domainit lets errors in handlers bubble up to parent domain
 //
@@ -8,23 +9,34 @@ var called = false;
 var domain = require('domain');
 var d = domain.create();
 
-d.on('error', function () {
+function errHandler(err) {
   called = true;
-  d.dispose();
-});
+  assert(err);
+  assert(err.message === 'Error in handler!');
+}
 
-d.run(function () {
-  domainit(function (cb) {
-    cb(new Error('Callback!'));
-  })(function (err) {
-    throw new Error('Error in handler!');
-  });
-});
-
-
-process.on('exit', function () {
-  if (!called) {
-    throw new Error('Handler not called.');
+function exit() {
+  if (wrongDomain > 0) {
+    console.log('WRONG DOMAIN');
     process.exit(1);
   }
-});
+  else if (!called) {
+    console.log('ERROR NOT CALLED');
+    process.exit(1);
+  }
+}
+
+function run() {
+  domainit(function (cb) {
+    cb(null);
+  })(function (err) {
+    wrongDomain += domain.active === d ? 0 : 1;
+    throw new Error('Error in handler!');
+  });
+}
+
+d.on('error', errHandler);
+process.on('exit', exit);
+
+d.run(run);
+
