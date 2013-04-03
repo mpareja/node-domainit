@@ -4,7 +4,8 @@
   "description": "Run a function within the confines of a domain using the simple callback form you know and love.",
   "main": "index.js",
   "scripts": {
-    "test": "tap ./test/*.js"
+    "test": "tap ./test/*.js",
+    "lint": "jslint --devel --node --vars --maxerr=100 --indent=2 --sloppy=true --nomen=true --undef --plusplus --stupid --minusminus -- index.js"
   },
   "directories": {
     "test": "test"
@@ -28,6 +29,7 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "devDependencies": {
-    "tap": "~0.4.1"
+    "tap": "~0.4.1",
+    "jslint": "~0.1.9"
   }
 }
