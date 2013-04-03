@@ -1,7 +1,6 @@
 var domain = require('domain');
 module.exports = function (fn) {
-  var d = domain.create(),
-    callback = null, error = null, result = undefined;
+  var d = domain.create(), callback = null, error = null, result;
 
   d.on('error', function (err) {
     error = err;
@@ -12,12 +11,13 @@ module.exports = function (fn) {
   });
   return function (cb) {
     var active = domain.active;
-    callback = !domain.active ? cb
-      : function (err, result) {
-          active.run(function() {
-            cb(err, result);
-          });
-        };
+    if (domain.active) {
+      callback = function (err, result) {
+        active.run(function () {
+          cb(err, result);
+        });
+      };
+    } else { callback = cb; }
 
     d.run(function () {
       fn(d.intercept(function (data) {
