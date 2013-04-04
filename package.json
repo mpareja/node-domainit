@@ -1,7 +1,7 @@
 {
   "name": "domainit",
   "version": "0.0.1",
-  "description": "Run a function within the confines of a domain using the simple callback form you know and love.",
+  "description": "Wrap a function within the confines of a domain using the simple callback form you know and love.",
   "engines": { "node": ">=0.7" },
   "main": "index.js",
   "scripts": {
