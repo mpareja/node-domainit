@@ -1,4 +1,4 @@
-# domainit - wrap a function in the safety of a domain
+# domainit - wrap a function with the safety of a domain
 
 Wrap a function with the warm comfort of a node domain using standard callbacks.
 
