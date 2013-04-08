@@ -1,29 +1,45 @@
 var domain = require('domain');
 module.exports = function (fn) {
-  var d = domain.create(), callback = null, error = null, result;
+  var d = domain.create(), callback = null, error = null, results = null;
 
   d.on('error', function (err) {
     error = err;
     d.dispose();
   });
   d.on('dispose', function () {
-    callback(error, result);
+    if (results && results.length > 0) {
+      callback.apply(null, [error].concat(results));
+    } else {
+      callback(error);
+    }
   });
-  return function (cb) {
+  return function () {
+    var allArgs = Array.prototype.slice.call(arguments, 0);
+
+    // generate callback which is executed in the caller's domain, if one exists
+    var cb = allArgs.slice(-1)[0]; // strip args
     var active = domain.active;
-    if (domain.active) {
-      callback = function (err, result) {
-        active.run(function () {
-          cb(err, result);
-        });
-      };
-    } else { callback = cb; }
+    callback = active ? wrapToRunInDomain(cb, active) : cb;
+
+    // next, we'll pass original parameters except with our own callback
+    var args = allArgs.slice(0, -1);
+    args.push(function (err) {
+      error = err;
+      results = Array.prototype.slice.call(arguments, 1);
+      d.dispose();
+    });
 
     d.run(function () {
-      fn(d.intercept(function (data) {
-        result = data;
-        d.dispose();
-      }));
+      fn.apply(null, args);
     });
   };
 };
+
+function wrapToRunInDomain(fn, domain) {
+  return function (err, result) {
+    domain.run(function () {
+      var args = Array.prototype.slice.call(arguments, 0);
+      fn.apply(null, args);
+    });
+  };
+}
