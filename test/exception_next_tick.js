@@ -10,7 +10,9 @@ process.on('exit', function () {
 });
 
 domainit(function (cb) {
-  throw new Error('Exception!');
+  process.nextTick(function () {
+    throw new Error('Exception!');
+  });
 })(function (err) {
   called = true;
   assert(err);

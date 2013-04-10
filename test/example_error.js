@@ -8,13 +8,13 @@ function unsafe(cb) {
   });
 }
 
+process.on('exit', function () {
+  assert(called);
+});
+
 var safe = domainit(unsafe);
 safe(function (err) {
   assert(err);
   assert(err.message === 'Oops!');
   called = true;
-});
-
-process.on('exit', function () {
-  assert(called);
 });
