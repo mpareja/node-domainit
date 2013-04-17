@@ -1,6 +1,6 @@
 {
   "name": "domainit",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Wrap a function within the confines of a domain using the simple callback form you know and love.",
   "engines": {
     "node": ">=0.7"
