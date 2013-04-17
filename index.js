@@ -29,9 +29,14 @@ module.exports = function (fn) {
       d.dispose();
     });
 
-    d.run(function () {
-      fn.apply(null, args);
-    });
+    try {
+      d.run(function () {
+        fn.apply(null, args);
+      });
+    } catch (e) {
+      error = e;
+      d.dispose();
+    }
   };
 };
 
