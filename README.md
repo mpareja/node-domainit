@@ -20,3 +20,11 @@ safe(function (err) {
   assert(err.message === 'Oops!');
 });
 ```
+
+## warning for node < v0.9.5
+
+Versions of Node before v0.9.5 raise `uncaughtException` events despite errors being handled within a domain. You shouldn't need to handle `uncaughtException` if you are working with domains.
+
+Some testing frameworks, like `mocha`, bind to the `uncaughtException` event. This will wrongly cause tests to fail when errors occur within a domain on Node versions < 0.9.5.
+
+Check out the relevant [issue on GitHub](https://github.com/joyent/node/issues/4375).
